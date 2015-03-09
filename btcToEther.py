@@ -179,7 +179,7 @@ def list_purchases(addr):
         if o['output'][65:] == '1':
             h = o['output'][:64]
             try:
-                txs[h] = fetchtx(h, network)
+                txs[h] = fetchtx(h)
             except:
                 txs[h] = blockr_fetchtx(h, network)
     o = []
@@ -283,7 +283,7 @@ elif args[0] == 'finalize':
     if not w:
         raise Exception("Must specify valid wallet file!")
     try:
-        u = unspent(w["btcaddr"], network)
+        u = unspent(w["btcaddr"])
     except:
         try:
             u = blockr_unspent(w["btcaddr"], network)
@@ -304,7 +304,10 @@ elif args[0] == 'finalize':
         tx = finalize(w, u, pw, args[1])
     print("Pushing: %s" % tx)
     try:
-        print(pushtx(tx))
+        if network == 'testnet':
+            blockr_pushtx(tx, network)
+        else:
+            print(pushtx(tx))
     except:
         try:
             print(eligius_pushtx(tx))
