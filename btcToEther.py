@@ -13,6 +13,7 @@ from optparse import OptionParser
 
 # Arguments
 network = 'testnet'
+magicbyte = 111 if network == 'testnet' else 0
 
 exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
 minimum = 1000000
@@ -127,7 +128,7 @@ def genwallet(seed, pw, email):
     ethpriv = sha3(seed)
     btcpriv = sha3(seed + '\x01')
     ethaddr = sha3(secure_privtopub(ethpriv)[1:])[12:].encode('hex')
-    btcaddr = privtoaddr(btcpriv)
+    btcaddr = privkey_to_address(btcpriv, magicbyte)
     return {
         "encseed": encseed.encode('hex'),
         "ethaddr": ethaddr,
