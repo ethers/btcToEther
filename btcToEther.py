@@ -16,8 +16,8 @@ network = 'testnet'
 magicbyte = 111 if network == 'testnet' else 0
 
 exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
-minimum = 1000000
-maximum = 150000000000
+minimum = 100000  # 0.001 BTC
+maximum = 15000000  # 0.15 BTC since testnet faucet only giving 0.25BTC
 
 # Option parsing
 
