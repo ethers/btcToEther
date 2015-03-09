@@ -12,8 +12,9 @@ import urllib2
 from optparse import OptionParser
 
 # Arguments
+network = 'testnet'
 
-exodus = '36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2'
+exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
 minimum = 1000000
 maximum = 150000000000
 
@@ -177,9 +178,9 @@ def list_purchases(addr):
         if o['output'][65:] == '1':
             h = o['output'][:64]
             try:
-                txs[h] = fetchtx(h)
+                txs[h] = fetchtx(h, network)
             except:
-                txs[h] = blockr_fetchtx(h)
+                txs[h] = blockr_fetchtx(h, network)
     o = []
     for h in txs:
         txhex = txs[h]
@@ -281,10 +282,10 @@ elif args[0] == 'finalize':
     if not w:
         raise Exception("Must specify valid wallet file!")
     try:
-        u = unspent(w["btcaddr"])
+        u = unspent(w["btcaddr"], network)
     except:
         try:
-            u = blockr_unspent(w["btcaddr"])
+            u = blockr_unspent(w["btcaddr"], network)
         except:
             raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     pw = ask_for_password()
