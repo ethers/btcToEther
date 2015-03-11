@@ -297,7 +297,7 @@ elif args[0] == 'finalize':
         except:
             raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     pw = ask_for_password()
-    confirm = raw_input("Please confirm that you want to finalize: ")
+    confirm = raw_input("Do you want to finalize? (y/n): ")
     if confirm.strip() not in ['y', 'yes', 'Y', 'YES']:
         print("Aborting as you requested")
         sys.exit()
