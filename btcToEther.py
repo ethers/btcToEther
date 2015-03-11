@@ -39,8 +39,6 @@ parser.add_option('-s', '--seed',
                   default=None, dest='seed')
 parser.add_option('-w', '--wallet',
                   default='btcToEtherWallet.json', dest='wallet')
-parser.add_option('-e', '--email',
-                  default=None, dest='email')
 parser.add_option('-o', '--overwrite',
                   default=False, dest='overwrite')
 
@@ -134,7 +132,7 @@ def getseed(encseed, pw, ethaddr):
     return seed
 
 
-def genwallet(seed, pw, email):
+def genwallet(seed, pw):
     encseed = aes.encryptData(pw, seed)
     ethpriv = sha3(seed)
     btcpriv = sha3(seed + '\x01')
@@ -143,8 +141,7 @@ def genwallet(seed, pw, email):
     return {
         "encseed": encseed.encode('hex'),
         "ethaddr": ethaddr,
-        "btcaddr": btcaddr,
-        "email": email
+        "btcaddr": btcaddr
     }
 
 
@@ -253,8 +250,7 @@ if not len(args):
     args.append('help')
 if args[0] == 'genwallet':
     pw = ask_for_password(True)
-    email = options.email or raw_input("Please enter email: ")
-    newwal = genwallet(ask_for_seed(), pw, email)
+    newwal = genwallet(ask_for_seed(), pw)
     checkwrite(options.wallet, lambda: json.dumps(newwal))
     print("Your intermediate Bitcoin address is: %s" % newwal['btcaddr'])
     print(" ")
@@ -324,19 +320,6 @@ elif args[0] == 'finalize':
             print(eligius_pushtx(tx))
         except:
             raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
-    headers = {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json, text/plain, */*'
-    }
-    try:
-        make_request('https://sale.ethereum.org/sendmail',
-                     json.dumps({"tx": tx,
-                                 "email": w["email"],
-                                 "emailjson": w}),
-                     headers=headers)
-    except:
-        print("Tried to send email backup automatically, but failed. "
-              "Please back up your wallet")
 elif args[0] == "list":
     if len(args) >= 2:
         addr = args[1]
