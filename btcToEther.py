@@ -326,11 +326,10 @@ elif args[0] == "list":
     else:
         raise Exception("Need to specify an address or wallet")
     out = list_purchases(addr)
+    if len(out) == 0:
+        print("No purchases found.  (You may need to wait for some bitcoin confirmations.)")
     for o in out:
         print("Tx: %s" % o["tx"])
-        print("Satoshis: %d" % o["value"])
-        print("Estimated ETH (min): %f" % (o["value"] * 1337 / 10**8))
-        print("Estimated ETH (max): %f" % (o["value"] * 2000 / 10**8))
 # sha3 calculator
 elif args[0] == 'sha3':
     print(sha3(sys.argv[2]).encode('hex'))
@@ -342,7 +341,7 @@ else:
     print('Use "python btcToEther.py getethaddress" to output the Ethereum address')
     print('Use "python btcToEther.py getethprivkey" to output the Ethereum private key')
     print('Use "python btcToEther.py finalize" to finalize the funding process once you have deposited to the intermediate address')
-    print('Use "python btcToEther.py finalize 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to purchase directly into some other Ethereum address')
+    print('Use "python btcToEther.py finalize <ether address>" to purchase directly into some other Ethereum address')
     print('Use "python btcToEther.py list" to list purchases made with your wallet')
-    print('Use "python btcToEther.py list 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to list purchases made into that address')
+    print('Use "python btcToEther.py list <ether address>" to list purchases made into that address')
     print('Use -s to specify a seed, -w to specify a wallet file and -p to specify a password when creating a wallet. The -w, -b and -p options also work with other commands.')
