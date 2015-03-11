@@ -11,10 +11,14 @@ import urllib2
 
 from optparse import OptionParser
 
-# Arguments
-network = 'testnet'
+# Values used by pybitcointools bci.py for blockr network
+TESTNET = 'testnet'
+MAINNET = 'btc'
 
-if network == 'testnet':
+# Arguments
+network = TESTNET
+
+if network == TESTNET:
     exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
     magicbyte = 111
     minimum = 100000  # 0.001 BTC
@@ -180,7 +184,7 @@ def finalize(wallet, utxos, pw, addr=None):
 
 
 def list_purchases(addr):
-    if network == 'testnet':
+    if network == TESTNET:
         outs = blockr_unspent(hex_to_b58check(addr, magicbyte), network)
     else:
         outs = unspent(hex_to_b58check(addr))
@@ -311,7 +315,7 @@ elif args[0] == 'finalize':
         tx = finalize(w, u, pw, args[1])
     print("Pushing: %s" % tx)
     try:
-        if network == 'testnet':
+        if network == TESTNET:
             blockr_pushtx(tx, network)
         else:
             print(pushtx(tx))
