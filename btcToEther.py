@@ -34,7 +34,7 @@ parser.add_option('-p', '--password',
 parser.add_option('-s', '--seed',
                   default=None, dest='seed')
 parser.add_option('-w', '--wallet',
-                  default='ethwallet.json', dest='wallet')
+                  default='btcToEtherWallet.json', dest='wallet')
 parser.add_option('-e', '--email',
                   default=None, dest='email')
 parser.add_option('-o', '--overwrite',
