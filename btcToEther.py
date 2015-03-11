@@ -13,11 +13,18 @@ from optparse import OptionParser
 
 # Arguments
 network = 'testnet'
-magicbyte = 111 if network == 'testnet' else 0
 
-exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
-minimum = 100000  # 0.001 BTC
-maximum = 15000000  # 0.15 BTC since testnet faucet only giving 0.25BTC
+if network = 'testnet':
+    exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
+    magicbyte = 111
+    minimum = 100000  # 0.001 BTC
+    maximum = 15000000  # 0.15 BTC since testnet faucet only giving 0.25BTC
+else:
+    exodus = ''  # TODO
+    magicbyte = 0
+    minimum = 1000000  # 0.01 BTC
+    maximum = 1500000000  # 15 BTC
+
 
 # Option parsing
 
