@@ -317,7 +317,7 @@ elif args[0] == 'finalize':
             print(eligius_pushtx(tx))
         except:
             raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
-    print("Here is the Transaction Hash you should use to claim your ether: ", txhash(tx))
+    print("Here is the Transaction Hash you should use to claim your ether: %s" % txhash(tx))
 elif args[0] == "list":
     if len(args) >= 2:
         addr = args[1]
