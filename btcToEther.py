@@ -14,7 +14,7 @@ from optparse import OptionParser
 # Arguments
 network = 'testnet'
 
-if network = 'testnet':
+if network == 'testnet':
     exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
     magicbyte = 111
     minimum = 100000  # 0.001 BTC
