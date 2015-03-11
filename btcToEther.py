@@ -199,10 +199,10 @@ def list_purchases(addr):
     o = []
     for h in txs:
         txhex = txs[h]
-        print('@@@@@ txhex: ', txhex)
+        txhex = txhex.encode('ascii')
         txouts = deserialize(txhex)['outs']
         if len(txouts) >= 2 and txouts[0]['value'] >= minimum - 30000:
-            addr = script_to_address(txouts[0]['script'])
+            addr = script_to_address(txouts[0]['script'], magicbyte)
             if addr == exodus:
                 v = txouts[0]['value'] + 30000
                 o.append({"tx": h, "value": v})
