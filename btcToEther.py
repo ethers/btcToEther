@@ -295,7 +295,7 @@ elif args[0] == 'finalize':
         try:
             u = blockr_unspent(w["btcaddr"], network)
         except:
-            raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
+            raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     pw = ask_for_password()
     confirm = raw_input("Please confirm that you want to finalize: ")
     if confirm.strip() not in ['y', 'yes', 'Y', 'YES']:
@@ -316,7 +316,7 @@ elif args[0] == 'finalize':
         try:
             print(eligius_pushtx(tx))
         except:
-            raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
+            raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     print("Here is the Transaction Hash you should use to claim your ether: ", txhash(tx))
 elif args[0] == "list":
     if len(args) >= 2:
@@ -336,13 +336,13 @@ elif args[0] == 'sha3':
     print(sha3(sys.argv[2]).encode('hex'))
 # Help
 else:
-    print('Use "python pyethsaletool.py genwallet" to generate a wallet')
-    print('Use "python pyethsaletool.py getbtcaddress" to output the intermediate Bitcoin address you need to send funds to')
-    print('Use "python pyethsaletool.py getbtcprivkey" to output the private key to your intermediate Bitcoin address')
-    print('Use "python pyethsaletool.py getethaddress" to output the Ethereum address')
-    print('Use "python pyethsaletool.py getethprivkey" to output the Ethereum private key')
-    print('Use "python pyethsaletool.py finalize" to finalize the funding process once you have deposited to the intermediate address')
-    print('Use "python pyethsaletool.py finalize 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to purchase directly into some other Ethereum address')
-    print('Use "python pyethsaletool.py list" to list purchases made with your wallet')
-    print('Use "python pyethsaletool.py list 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to list purchases made into that address')
+    print('Use "python btcToEther.py genwallet" to generate a wallet')
+    print('Use "python btcToEther.py getbtcaddress" to output the intermediate Bitcoin address you need to send funds to')
+    print('Use "python btcToEther.py getbtcprivkey" to output the private key to your intermediate Bitcoin address')
+    print('Use "python btcToEther.py getethaddress" to output the Ethereum address')
+    print('Use "python btcToEther.py getethprivkey" to output the Ethereum private key')
+    print('Use "python btcToEther.py finalize" to finalize the funding process once you have deposited to the intermediate address')
+    print('Use "python btcToEther.py finalize 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to purchase directly into some other Ethereum address')
+    print('Use "python btcToEther.py list" to list purchases made with your wallet')
+    print('Use "python btcToEther.py list 00c40fe2095423509b9fd9b754323158af2310f3" (or some other ethereum address) to list purchases made into that address')
     print('Use -s to specify a seed, -w to specify a wallet file and -p to specify a password when creating a wallet. The -w, -b and -p options also work with other commands.')
