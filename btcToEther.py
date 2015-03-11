@@ -180,7 +180,10 @@ def finalize(wallet, utxos, pw, addr=None):
 
 
 def list_purchases(addr):
-    outs = unspent(hex_to_b58check(addr))
+    if network == 'testnet':
+        outs = blockr_unspent(hex_to_b58check(addr, magicbyte), network)
+    else:
+        outs = unspent(hex_to_b58check(addr))
     txs = {}
     for o in outs:
         if o['output'][65:] == '1':
@@ -192,6 +195,7 @@ def list_purchases(addr):
     o = []
     for h in txs:
         txhex = txs[h]
+        print('@@@@@ txhex: ', txhex)
         txouts = deserialize(txhex)['outs']
         if len(txouts) >= 2 and txouts[0]['value'] >= minimum - 30000:
             addr = script_to_address(txouts[0]['script'])
