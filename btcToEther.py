@@ -251,10 +251,6 @@ if args[0] == 'genwallet':
     print("Your intermediate Bitcoin address is: %s" % newwal['btcaddr'])
     print(" ")
     print("Be absolutely sure to keep the wallet safe and backed up, and do not lose your password")
-    print(" ")
-    print("###########################################################################")
-    print("Note that the Ether sale is over, so any purchases made using this method are essentially donations to EthSuisse. This code is only kept online for the benefit of other projects and for individuals wishing to learn how the encryption on their wallet works")
-    print("###########################################################################")
 # Get wallet Bitcoin address
 elif args[0] == 'getbtcaddress':
     if not w:
