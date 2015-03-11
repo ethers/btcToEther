@@ -297,12 +297,9 @@ elif args[0] == 'finalize':
         except:
             raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     pw = ask_for_password()
-    confirm = raw_input("Please confirm that you have read and understand the terms and conditions and purchase agreement (Y/N): ")
+    confirm = raw_input("Please confirm that you want to finalize: ")
     if confirm.strip() not in ['y', 'yes', 'Y', 'YES']:
-        print("Aborting. Docs can be found here: ")
-        print(" ")
-        print("https://www.ethereum.org/pdfs/TermsAndConditionsOfTheEthereumGenesisSale.pdf")
-        print("https://www.ethereum.org/pdfs/EtherProductPurchaseAgreement.pdf")
+        print("Aborting as you requested")
         sys.exit()
     if len(args) == 1:
         tx = finalize(w, u, pw)
@@ -320,6 +317,7 @@ elif args[0] == 'finalize':
             print(eligius_pushtx(tx))
         except:
             raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running './pyethsaletool.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
+    print("Here is the Transaction Hash you should use to claim your ether: ", txhash(tx))
 elif args[0] == "list":
     if len(args) >= 2:
         addr = args[1]
