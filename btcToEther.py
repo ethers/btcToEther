@@ -15,19 +15,17 @@ from optparse import OptionParser
 TESTNET = 'testnet'
 MAINNET = 'btc'
 
+SATOSHI_PER_BTC = 10**8
+
 # Arguments
 network = TESTNET
 
 if network == TESTNET:
     exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
     magicbyte = 111
-    minimum = 100000  # 0.001 BTC
-    maximum = 15000000  # 0.15 BTC since testnet faucet only giving 0.25BTC
 else:
     exodus = ''  # TODO
     magicbyte = 0
-    minimum = 1000000  # 0.01 BTC
-    maximum = 1500000000  # 15 BTC
 
 satoshiFee = 30000  # 3mBTC fee for the Bitcoin miner
 
@@ -146,16 +144,17 @@ def genwallet(seed, pw):
     }
 
 # etherFeePercent is a string in format xx.xx eg 12.34
-def makeAndSignTx(wallet, utxos, pw, etherFeePercent):
+def makeAndSignTx(wallet, utxos, pw, etherFeePercent, btc_amount):
     seed = getseed(wallet["encseed"], pw, wallet["ethaddr"])
     balance = sum([o["value"] for o in utxos])
     change = 0
     outputethaddr = wallet["ethaddr"]
+    minimum = float(btc_amount) * SATOSHI_PER_BTC + satoshiFee
 
     if balance == 0:
         raise Exception("No funds in address")
     elif balance < minimum:
-        raise Exception("Insufficient funds. Need at least %s BTC" %
+        raise Exception("Insufficient funds. Need at least %s BTC (miner fee is 3mBTC)" %
                         str(minimum * 0.00000001))
     else:
         outs = [
@@ -169,6 +168,7 @@ def makeAndSignTx(wallet, utxos, pw, etherFeePercent):
     return tx
 
 
+# TODO global minimum removed
 def list_purchases(addr):
     if network == TESTNET:
         outs = blockr_unspent(hex_to_b58check(addr, magicbyte), network)
@@ -276,10 +276,14 @@ elif args[0] == 'recover':
         print("Your seed is: %s" % getseed(w['encseed'], pw, w['ethaddr']))
 # Create the raw transaction for reserving and claiming an ether ticket
 elif args[0] == 'makeAndSignTx':
-    if len(args) < 2:
-        raise Exception("Must specify an ether fee percentage, example 12.34")
+    if len(args) < 3:
+        raise Exception("Arguments needed <etherFeePercent> <bitcoinAmount>")
     if not re.match('\d\d\.\d\d', args[1]):
         raise Exception("Ether fee percentage format is xx.xx, example 09.80 for 9.8%")
+    try:
+        btc_amount = float(args[2])
+    except ValueError, e:
+        raise Exception("<bitcoinAmount> must be numeric")
     if not w:
         raise Exception("Must specify valid wallet file!")
     try:
@@ -295,7 +299,7 @@ elif args[0] == 'makeAndSignTx':
         print("Aborting as you requested")
         sys.exit()
 
-    tx = makeAndSignTx(w, u, pw, args[1])
+    tx = makeAndSignTx(w, u, pw, args[1], args[2])
 
     # print("Pushing: %s" % tx)
     # try:
@@ -335,7 +339,7 @@ else:
     print('Use "python btcToEther.py getbtcprivkey" to output the private key to your intermediate Bitcoin address')
     print('Use "python btcToEther.py getethaddress" to output the Ethereum address')
     print('Use "python btcToEther.py getethprivkey" to output the Ethereum private key')
-    print('Use "python btcToEther.py makeAndSignTx <etherFeePercent>" to create the raw transaction once you have deposited to the intermediate address')
+    print('Use "python btcToEther.py makeAndSignTx <etherFeePercent> <bitcoinAmount>" to create the raw transaction once you have deposited to the intermediate address')
     print('Use "python btcToEther.py list" to list purchases made with your wallet')
     print('Use "python btcToEther.py list <ether address>" to list purchases made into that address')
     print('Use -s to specify a seed, -w to specify a wallet file and -p to specify a password when creating a wallet. The -w, -b and -p options also work with other commands.')
