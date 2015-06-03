@@ -317,7 +317,8 @@ elif args[0] == 'makeAndSignTx':
     #         print(eligius_pushtx(tx))
     #     except:
     #         raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
-    print("Here is the Transaction Hash you should use to claim your ether: %s" % txhash(tx))
+    print("Here is the Raw Transaction for reserving the ether ticket:\n%s" % tx)
+    print("\nWhen the ticket is reserved, the tx hash will be: %s" % txhash(tx))
 elif args[0] == "list":
     if len(args) >= 2:
         addr = args[1]
