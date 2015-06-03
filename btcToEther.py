@@ -145,7 +145,7 @@ def genwallet(seed, pw):
     }
 
 
-def finalize(wallet, utxos, pw, addr=None):
+def makeAndSignTx(wallet, utxos, pw, addr=None):
     seed = getseed(wallet["encseed"], pw, wallet["ethaddr"])
     balance = sum([o["value"] for o in utxos])
     change = 0
@@ -285,8 +285,8 @@ elif args[0] == 'recover':
     else:
         pw = ask_for_password()
         print("Your seed is: %s" % getseed(w['encseed'], pw, w['ethaddr']))
-# Finalize a wallet
-elif args[0] == 'finalize':
+# Create the raw transaction for reserving and claiming an ether ticket
+elif args[0] == 'makeAndSignTx':
     if not w:
         raise Exception("Must specify valid wallet file!")
     try:
@@ -295,28 +295,28 @@ elif args[0] == 'finalize':
         try:
             u = blockr_unspent(w["btcaddr"], network)
         except:
-            raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to finalize. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
+            raise Exception("Blockchain.info and Blockr.io both down. Cannot get transaction outputs to makeAndSignTx. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     pw = ask_for_password()
-    confirm = raw_input("Do you want to finalize? (y/n): ")
+    confirm = raw_input("Do you want to makeAndSignTx? (y/n): ")
     if confirm.strip() not in ['y', 'yes', 'Y', 'YES']:
         print("Aborting as you requested")
         sys.exit()
     if len(args) == 1:
-        tx = finalize(w, u, pw)
+        tx = makeAndSignTx(w, u, pw)
     else:
-        # Finalize into custom address
-        tx = finalize(w, u, pw, args[1])
-    print("Pushing: %s" % tx)
-    try:
-        if network == TESTNET:
-            blockr_pushtx(tx, network)
-        else:
-            print(pushtx(tx))
-    except:
-        try:
-            print(eligius_pushtx(tx))
-        except:
-            raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
+        # makeAndSignTx into custom address
+        tx = makeAndSignTx(w, u, pw, args[1])
+    # print("Pushing: %s" % tx)
+    # try:
+    #     if network == TESTNET:
+    #         blockr_pushtx(tx, network)
+    #     else:
+    #         print(pushtx(tx))
+    # except:
+    #     try:
+    #         print(eligius_pushtx(tx))
+    #     except:
+    #         raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     print("Here is the Transaction Hash you should use to claim your ether: %s" % txhash(tx))
 elif args[0] == "list":
     if len(args) >= 2:
@@ -340,8 +340,8 @@ else:
     print('Use "python btcToEther.py getbtcprivkey" to output the private key to your intermediate Bitcoin address')
     print('Use "python btcToEther.py getethaddress" to output the Ethereum address')
     print('Use "python btcToEther.py getethprivkey" to output the Ethereum private key')
-    print('Use "python btcToEther.py finalize" to finalize the funding process once you have deposited to the intermediate address')
-    print('Use "python btcToEther.py finalize <ether address>" to purchase directly into some other Ethereum address')
+    print('Use "python btcToEther.py makeAndSignTx" to create the raw transaction once you have deposited to the intermediate address')
+    print('Use "python btcToEther.py makeAndSignTx <ether address>" to purchase directly into some other Ethereum address')
     print('Use "python btcToEther.py list" to list purchases made with your wallet')
     print('Use "python btcToEther.py list <ether address>" to list purchases made into that address')
     print('Use -s to specify a seed, -w to specify a wallet file and -p to specify a password when creating a wallet. The -w, -b and -p options also work with other commands.')
