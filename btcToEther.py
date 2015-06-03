@@ -21,10 +21,9 @@ SATOSHI_PER_BTC = 10**8
 network = TESTNET
 
 if network == TESTNET:
-    exodus = 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
+    # a payment addr for testing is 'mvBWJFv8Uc84YEyZKBm8HZQ7qrvmBiH7zR'
     magicbyte = 111
 else:
-    exodus = ''  # TODO
     magicbyte = 0
 
 satoshiFee = 30000  # 3mBTC fee for the Bitcoin miner
@@ -144,7 +143,7 @@ def genwallet(seed, pw):
     }
 
 # etherFeePercent is a string in format xx.xx eg 12.34
-def makeAndSignTx(wallet, utxos, pw, etherFeePercent, btc_amount):
+def makeAndSignTx(wallet, utxos, pw, etherFeePercent, btc_amount, btc_addr):
     seed = getseed(wallet["encseed"], pw, wallet["ethaddr"])
     balance = sum([o["value"] for o in utxos])
     change = 0
@@ -158,7 +157,7 @@ def makeAndSignTx(wallet, utxos, pw, etherFeePercent, btc_amount):
                         str(minimum * 0.00000001))
     else:
         outs = [
-            exodus+':'+str(balance - satoshiFee),
+            btc_addr+':'+str(balance - satoshiFee),
             hex_to_b58check(outputethaddr)+':10000'+etherFeePercent.replace('.', ''),
         ]
     tx = mktx(utxos, outs)
@@ -276,14 +275,18 @@ elif args[0] == 'recover':
         print("Your seed is: %s" % getseed(w['encseed'], pw, w['ethaddr']))
 # Create the raw transaction for reserving and claiming an ether ticket
 elif args[0] == 'makeAndSignTx':
-    if len(args) < 3:
-        raise Exception("Arguments needed <etherFeePercent> <bitcoinAmount>")
+    if len(args) < 4:
+        raise Exception("Arguments needed <etherFeePercent> <bitcoinAmount> <bitcoinAddress")
     if not re.match('\d\d\.\d\d', args[1]):
         raise Exception("Ether fee percentage format is xx.xx, example 09.80 for 9.8%")
     try:
         btc_amount = float(args[2])
     except ValueError, e:
         raise Exception("<bitcoinAmount> must be numeric")
+    try:
+        btc_addr = b58check_to_hex(args[3])
+    except AssertionError, e:
+        raise Exception("<bitcoinAddress> is not valid")
     if not w:
         raise Exception("Must specify valid wallet file!")
     try:
@@ -299,7 +302,7 @@ elif args[0] == 'makeAndSignTx':
         print("Aborting as you requested")
         sys.exit()
 
-    tx = makeAndSignTx(w, u, pw, args[1], args[2])
+    tx = makeAndSignTx(w, u, pw, args[1], args[2], args[3])
 
     # print("Pushing: %s" % tx)
     # try:
