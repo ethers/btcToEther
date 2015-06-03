@@ -29,6 +29,7 @@ else:
     minimum = 1000000  # 0.01 BTC
     maximum = 1500000000  # 15 BTC
 
+satoshiFee = 30000  # 3mBTC fee for the Bitcoin miner
 
 # Option parsing
 
@@ -158,7 +159,7 @@ def makeAndSignTx(wallet, utxos, pw, etherFeePercent):
                         str(minimum * 0.00000001))
     else:
         outs = [
-            exodus+':'+str(balance - 30000),
+            exodus+':'+str(balance - satoshiFee),
             hex_to_b58check(outputethaddr)+':10000'+etherFeePercent.replace('.', ''),
         ]
     tx = mktx(utxos, outs)
@@ -186,10 +187,10 @@ def list_purchases(addr):
         txhex = txs[h]
         txhex = txhex.encode('ascii')
         txouts = deserialize(txhex)['outs']
-        if len(txouts) >= 2 and txouts[0]['value'] >= minimum - 30000:
+        if len(txouts) >= 2 and txouts[0]['value'] >= minimum - satoshiFee:
             addr = script_to_address(txouts[0]['script'], magicbyte)
             if addr == exodus:
-                v = txouts[0]['value'] + 30000
+                v = txouts[0]['value'] + satoshiFee
                 o.append({"tx": h, "value": v})
     return o
 
@@ -309,6 +310,9 @@ elif args[0] == 'makeAndSignTx':
     #         raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
     print("Here is the Raw Transaction for reserving the ether ticket:\n%s" % tx)
     print("\nWhen the ticket is reserved, the tx hash will be: %s" % txhash(tx))
+    print("\nHuman readable tx:\n%s" % deserialize(tx))
+
+
 elif args[0] == "list":
     if len(args) >= 2:
         addr = args[1]
