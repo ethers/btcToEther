@@ -165,7 +165,7 @@ def makeAndSignTx(wallet, utxos, pw, ether_fee_percent, btc_amount, btc_addr, et
     else:
         outs = [
             btc_addr+':'+str(balance - satoshiFee),
-            hex_to_b58check(outputethaddr)+':10000'+ether_fee_percent.replace('.', ''),
+            hex_to_b58check(outputethaddr)+':1'+ether_fee_percent.replace('.', ''),
         ]
     tx = mktx(utxos, outs)
     btcpriv = sha3(seed+'\x01')
