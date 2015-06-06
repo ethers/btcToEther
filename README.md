@@ -1,8 +1,8 @@
 Notes:
 
-DON'T LOSE YOUR WALLET OR YOUR PASSWORD
+###DON'T LOSE YOUR WALLET OR YOUR PASSWORD
 
-Instructions for ether `Buyer`:
+####Instructions for ether `Buyer`:
 
 1. First, go to EthereumBitcoinSwap and choose which ether ticket you want to get.  Note the ticket ID, `Bitcoin address` and the total price `bitcoinAmount`.
 1. `python btcToEther.py genwallet`, enter a password
@@ -13,10 +13,11 @@ change your mind, you can still get the bitcoins in the intermediate address.
 third party that will indirectly send you the ethers in the ticket you chose.
 1. Use `python btcToEther.py makeAndSignTx <etherFeePercent> <bitcoinAmount> <Bitcoin address>` to create a raw Bitcoin transaction.  Do not broadcast this
 transaction.  Give this transaction and the ticket ID, to a third party you trust that has ethers.  If you already have ethers, you can avoid a third
-party and be a `Claimer` yourself following the next instructions.
+party and be a `Claimer` yourself following the next instructions.  When the Bitcoin transaction is broadcasted by the Claimer, you will no longer be able
+to change your mind and cancel the swap for ethers with bitcoins.
 
+####`Claimer` instructions:
 
-`Claimer` instructions:
 1. On EthereumBitcoinSwap, look for the ticket using the ID.
 1. Enter the raw Bitcoin transaction and click Lookup.
 1. You should now be able to click the Reserve button.  Click it.
@@ -26,7 +27,7 @@ party and be a `Claimer` yourself following the next instructions.
 1. You should now be able to click the Claim button.  Click it.
 
 
-The result of the swap will be:
+####Result of swap:
 
 * `Claimer` will have their ether security deposit returned 100%, plus `etherFeePercent` of the number of ethers in the ticket.
 
