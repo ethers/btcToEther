@@ -2,14 +2,41 @@ Notes:
 
 DON'T LOSE YOUR WALLET OR YOUR PASSWORD
 
-Instructions:
+Instructions for ether `Buyer`:
 
+1. First, go to EthereumBitcoinSwap and choose which ether ticket you want to get.  Note the ticket ID, `Bitcoin address` and the total price `bitcoinAmount`.
 1. `python btcToEther.py genwallet`, enter a password
-2. Make sure you write down the password or otherwise keep it safe, and make sure you backup your wallet file (saved at btcToEtherWallet.json by default, you can use -w to save it somewhere else)
-3. Send BTC into the intermediate address provided
-4. Use `python btcToEther.py finalize` to send the BTC from the intermediate address to the btcrelay
-5. Copy the Transaction Hash and paste it to btcrelay at http://TODO and click on Lookup
-6. Wait for at least 6 confirmations and then click Claim Ether
+1. Make sure you write down the password or otherwise keep it safe, and make sure you backup your wallet file (saved at btcToEtherWallet.json by default, you can use -w to save it somewhere else)
+1. Send the `bitcoinAmount` into the intermediate address provided.  If you
+change your mind, you can still get the bitcoins in the intermediate address.
+1. If you do not have any ethers already, decide an `etherFeePercent` for the
+third party that will indirectly send you the ethers in the ticket you chose.
+1. Use `python btcToEther.py makeAndSignTx <etherFeePercent> <bitcoinAmount> <Bitcoin address>` to create a raw Bitcoin transaction.  Do not broadcast this
+transaction.  Give this transaction and the ticket ID, to a third party you trust that has ethers.  If you already have ethers, you can avoid a third
+party and be a `Claimer` yourself following the next instructions.
+
+
+`Claimer` instructions:
+1. On EthereumBitcoinSwap, look for the ticket using the ID.
+1. Enter the raw Bitcoin transaction and click Lookup.
+1. You should now be able to click the Reserve button.  Click it.
+1. Follow the instruction to broadcast the raw Bitcoin transaction.
+1. Monitor and wait until the transaction has 6 confirmations.
+1. On EthereumBitcoinSwap, look for the ticket using the ID.
+1. You should now be able to click the Claim button.  Click it.
+
+
+The result of the swap will be:
+
+* `Claimer` will have their ether security deposit returned 100%, plus `etherFeePercent` of the number of ethers in the ticket.
+
+* `Buyer` will have the number of ethers in the ticket, less the fee paid to the Claimer.
+
+* `Seller` has the bitcoins they desired at the Bitcoin address they specified in the ticket.
+
+
+EthereumBitcoinSwap is at http://TODO
+
 
 Additional instructions:
 
