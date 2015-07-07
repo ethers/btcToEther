@@ -16,6 +16,7 @@ TESTNET = 'testnet'
 MAINNET = 'btc'
 
 SATOSHI_PER_BTC = 10**8
+BTC_PER_SATOSHI = 1e8
 
 # Arguments
 network = TESTNET
@@ -26,7 +27,7 @@ if network == TESTNET:
 else:
     magicbyte = 0
 
-satoshiFee = 30000  # 3mBTC fee for the Bitcoin miner
+satoshiFee = 30000  # 0.3mBTC fee for the Bitcoin miner
 
 # Option parsing
 
@@ -158,10 +159,17 @@ def makeAndSignTx(wallet, utxos, pw, ether_fee_percent, btc_amount, btc_addr, et
         outputethaddr = wallet["ethaddr"]
 
     if balance == 0:
-        raise Exception("No funds in address")
+        raise Exception("\n\n**********************************************\n" \
+        "No funds. Need to send {0} BTC to your intermediate\n" \
+        "address {1}. (includes {2} BTC miner fee)" \
+        "\n**********************************************\n"
+        .format(
+            minimum / BTC_PER_SATOSHI,
+            wallet["btcaddr"],
+            satoshiFee / BTC_PER_SATOSHI))
     elif balance < minimum:
         raise Exception("Insufficient funds. Need at least %s BTC (miner fee is 3mBTC)" %
-                        str(minimum * 0.00000001))
+                        str(minimum * BTC_PER_SATOSHI))
     else:
         outs = [
             btc_addr+':'+str(balance - satoshiFee),
