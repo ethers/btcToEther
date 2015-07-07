@@ -32,7 +32,10 @@ party to claim your ticket.
 1. If 2 hours have elapsed since the 3rd party reserved the ticket, you may
 seek the assistance of anyone else who has ethers, to claim the ticket for you.
 Again, the `etherFeePercent` is important so that someone will want to help
-you.
+you.  This step must be completed within another 2 hours: tickets are only
+reserved for a total of 4 hours, and afterwards you need to reserve it again,
+or someone else can reserve the ticket and use their own bitcoins to claim
+the ethers (your bitcoins will already have been sent to the ether seller).
 
 ####`Claimer` instructions:
 
