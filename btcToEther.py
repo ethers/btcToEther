@@ -168,8 +168,15 @@ def makeAndSignTx(wallet, utxos, pw, ether_fee_percent, btc_amount, btc_addr, et
             wallet["btcaddr"],
             satoshiFee / BTC_PER_SATOSHI))
     elif balance < minimum:
-        raise Exception("Insufficient funds. Need at least %s BTC (miner fee is 3mBTC)" %
-                        str(minimum * BTC_PER_SATOSHI))
+        raise Exception("\n\n**********************************************\n" \
+        "Insufficient funds. Total needed is {0} BTC (includes {1} BTC miner fee).\n" \
+        "Intermediate address {2} only has {3} BTC." \
+        "\n**********************************************\n"
+        .format(
+            minimum / BTC_PER_SATOSHI,
+            satoshiFee / BTC_PER_SATOSHI,
+            wallet["btcaddr"],
+            balance))
     else:
         outs = [
             btc_addr+':'+str(balance - satoshiFee),
