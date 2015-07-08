@@ -1,8 +1,6 @@
-Notes:
+### DON'T LOSE YOUR WALLET OR YOUR PASSWORD
 
-###DON'T LOSE YOUR WALLET OR YOUR PASSWORD
-
-####Instructions for ether `Buyer`:
+#### Instructions for ether `Buyer`:
 
 1. First, go to EthereumBitcoinSwap and choose which ether ticket you want to get.  Note the ticket ID, `Bitcoin address` and the total price `bitcoinAmount`.
 1. `python btcToEther.py genwallet`, enter a password
@@ -37,7 +35,7 @@ reserved for a total of 4 hours, and afterwards you need to reserve it again,
 or someone else can reserve the ticket and use their own bitcoins to claim
 the ethers (your bitcoins will already have been sent to the ether seller).
 
-####`Claimer` instructions:
+#### `Claimer` instructions:
 
 1. On EthereumBitcoinSwap, look for the ticket using the ID, and click Reserve.
 1. Enter the Bitcoin transaction hash, Proof of Work (provided by `Buyer`)
@@ -51,7 +49,7 @@ Claim.
 1. You should now be able to click the Claim button.  Click it.
 
 
-####Result of swap:
+#### Result of swap:
 
 * `Claimer` will get `etherFeePercent` of the number of ethers in the ticket.
 
@@ -60,6 +58,29 @@ Claim.
 * `Seller` has the bitcoins they desired at the Bitcoin address they specified
 in the ticket.
 
+
+#### Future
+
+Servers can be setup as the 3rd party.  A server can listen for buyers to
+provide it with a ticket ID, Bitcoin transaction hash, and proof of work.
+A server can quickly check the validity (without expending any ethers) before
+reserving the ticket. Servers will monitor the Bitcoin blockchain, as well as
+the ether tickets that are claimable, and automatically claim tickets. The
+incentive for servers to provide this service is automated collection of ether
+fees from buyers, and servers do not need to post any collateral.
+
+EthereumBitcoinSwap can be extended to list such servers, and a buyer could
+choose which server to use.  EthereumBitcoinSwap could also make it easier
+for buyers and choose servers automatically, as well as notify all servers
+about all tickets, so that any unclaimed tickets, can be claimed by any
+server when the initial 2 hour period elapses.  This will eliminate the
+coordination a buyer would have to do if the 3rd party were a human.  With servers:
+a buyer submits a request to reserve a ticket; server reserves immediately;
+buyer broadcasts Bitcoin transaction; server immediately claims ticket
+when Bitcoin transaction has 6 confirmations.
+
+
+#### Notes
 
 EthereumBitcoinSwap is at http://TODO
 
