@@ -14,11 +14,12 @@ Bitcoin transaction.  A few steps later, you will give the hash only, to a 3rd
 party.
 1. Go back to EthereumBitcoinSwap, click Help, and then enter your Bitcoin
 transaction hash and ticket ID.  Click Compute.  It will take a random amount
-of minutes to compute a proof of work: be patient and multitask.
+of minutes to compute a proof of work nonce: be patient and multitask (it is
+a small inconvenience for a trustless, secure exchange).
 1. When a nonce has been computed, give the nonce, Bitcoin transaction hash
 (only the hash) and the ticket ID, to a 3rd party you trust that has ethers:
 make sure `etherFeePercent` is non-zero so that a 3rd party will help you.
-If you already have ethers, you can avoid a 3rd party and be a `Claimer` yourself following the next instructions.
+If you already have ethers, you can avoid a 3rd party and be a `Claimer` yourself following the `Claimer` instructions.
 1. Coordinate with 3rd party for them to reserve the ticket, go back to EthereumBitcoinSwap and check that your ticket has been reserved by the 3rd
 party.
 1. When the ticket has been reserved, broadcast your Bitcoin transaction (by
@@ -38,7 +39,7 @@ the ethers (your bitcoins will already have been sent to the ether seller).
 #### `Claimer` instructions:
 
 1. On EthereumBitcoinSwap, look for the ticket using the ID, and click Reserve.
-1. Enter the Bitcoin transaction hash, Proof of Work (provided by `Buyer`)
+1. Enter the Bitcoin transaction hash, Proof of Work (nonce provided by `Buyer`)
 1. You should now be able to click the Reserve button.  Click it.
 1. Assuming the Proof of Work is valid, wait for the Ethereum transaction to
 reserve the ticket.
