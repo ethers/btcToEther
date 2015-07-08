@@ -5,10 +5,11 @@
 1. First, go to EthereumBitcoinSwap and choose which ether ticket you want to get.  Note the ticket ID, `Bitcoin address` and the total price `bitcoinAmount`.
 1. `python btcToEther.py genwallet`, enter a password
 1. Make sure you write down the password or otherwise keep it safe, and make sure you backup your wallet file (saved at btcToEtherWallet.json by default, you can use -w to save it somewhere else)
-1. Send the `bitcoinAmount` into the intermediate address provided.  If you
-change your mind, you can still get the bitcoins in the intermediate address.
+1. Send the `bitcoinAmount` into the intermediate address (`python btcToEther.py getbtcaddress`).  If you change your mind, you can still get the bitcoins in the intermediate address.
 1. If you do not have any ethers already, decide an `etherFeePercent` for the
-3rd party that will indirectly send you the ethers in the ticket you chose.
+3rd party that will submit (2) Ethereum transactions for you.  Important: you
+may specify `etherFeePercent` of zero, but take a big risk that the required
+Ethereum transactions will not be performed for you.
 1. Use `python btcToEther.py makeAndSignTx <etherFeePercent> <bitcoinAmount> <Bitcoin address>` to create a raw Bitcoin transaction and hash.  Do not broadcast this
 Bitcoin transaction.  A few steps later, you will give the hash only, to a 3rd
 party.
@@ -17,20 +18,22 @@ transaction hash and ticket ID.  Click Compute.  It will take a random amount
 of minutes to compute a proof of work nonce: be patient and multitask (it is
 a small inconvenience for a trustless, secure exchange).
 1. When a nonce has been computed, give the nonce, Bitcoin transaction hash
-(only the hash) and the ticket ID, to a 3rd party you trust that has ethers:
+(only the hash) and the ticket ID, to a 3rd party that has ethers:
 make sure `etherFeePercent` is non-zero so that a 3rd party will help you.
 If you already have ethers, you can avoid a 3rd party and be a `Claimer` yourself following the `Claimer` instructions.
-1. Coordinate with 3rd party for them to reserve the ticket, go back to EthereumBitcoinSwap and check that your ticket has been reserved by the 3rd
-party.
-1. When the ticket has been reserved, broadcast your Bitcoin transaction (by
-using tool of your choice, eg https://blockchain.info/pushtx)
-Once broadcasted you will no longer be able to change your mind and cancel
-the swap for ethers with bitcoins.
-1. Wait until Bitcoin transaction has 6 confirmations and then request the 3rd
-party to claim your ticket.
+1. Coordinate with 3rd party for them to reserve the ticket (they follow `Claimer`
+instructions below)
+1. Go back to EthereumBitcoinSwap and check that your ticket has been reserved
+by the 3rd party.
+1. Once the ticket has been reserved, time is ticking and as soon as you can,
+broadcast your Bitcoin transaction (by using the tool of your choice, eg https://blockchain.info/pushtx)
+Once broadcasted you will no longer be able to change your mind and get your
+bitcoins back.
+1. Wait until the Bitcoin transaction has 6 confirmations and then request the
+3rd party to claim your ticket.
 1. If 2 hours have elapsed since the 3rd party reserved the ticket, you may
 seek the assistance of anyone else who has ethers, to claim the ticket for you.
-Again, the `etherFeePercent` is important so that someone will want to help
+Again, the `etherFeePercent` above is important so that someone will want to help
 you.  This step must be completed within another 2 hours: tickets are only
 reserved for a total of 4 hours, and afterwards you need to reserve it again,
 or someone else can reserve the ticket and use their own bitcoins to claim
