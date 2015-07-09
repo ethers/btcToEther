@@ -5,7 +5,9 @@
 1. First, go to EthereumBitcoinSwap and choose which ether ticket you want to get.  Note the ticket ID, `Bitcoin address` and the total price `bitcoinAmount`.
 1. `python btcToEther.py genwallet`, enter a password
 1. Make sure you write down the password or otherwise keep it safe, and make sure you backup your wallet file (saved at btcToEtherWallet.json by default, you can use -w to save it somewhere else)
-1. Send the `bitcoinAmount` into the intermediate address (`python btcToEther.py getbtcaddress`).  If you change your mind, you can still get the bitcoins in the intermediate address.
+1. Send the `bitcoinAmount` + 0.0003BTC (miner fee) into the intermediate address (`python btcToEther.py getbtcaddress`).  If you change your mind, you can still
+get the bitcoins in the intermediate address.  The miner fee helps ensure that
+your Bitcoin payment to the ether seller will be mined in a timely manner.
 1. If you do not have any ethers already, decide an `etherFeePercent` for the
 3rd party that will submit (2) Ethereum transactions for you.  Important: you
 may specify `etherFeePercent` of zero, but take a big risk that the required
