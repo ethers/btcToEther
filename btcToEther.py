@@ -343,8 +343,8 @@ elif args[0] == 'makeAndSignTx':
     #         print(eligius_pushtx(tx))
     #     except:
     #         raise Exception("Blockchain.info and Eligius both down. Cannot send transaction. Remember that your funds stored in the intermediate address can always be recovered by running 'python btcToEther.py getbtcprivkey' and importing the output into a Bitcoin wallet like blockchain.info")
-    print("Here is the Raw Transaction for reserving the ether ticket:\n%s" % tx)
-    print("\nWhen the ticket is reserved, the tx hash will be: %s" % txhash(tx))
+    print("\n\nHere is the Transaction Hash for reserving the ether ticket:\n%s" % txhash(tx))
+    print("\nAFTER the ticket is reserved, this is the transaction to broadcast:\n%s" % tx)
     print("\nHuman readable tx:\n%s" % deserialize(tx))
 
 
